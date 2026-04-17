@@ -54,7 +54,7 @@ const categoryImages: Record<string, string> = {
 };
 
 export function CommerceHero() {
-  const [lang, setLang] = useState<"en" | "id">("en");
+  const [lang, setLang] = useState<"en" | "id">("id");
   const t = translations[lang];
 
   return (
