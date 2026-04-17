@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { ArrowUpRight, Menu, Search, ShoppingBasket, Zap } from "lucide-react";
 import {
   Sheet,
@@ -12,37 +13,50 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { motion } from "framer-motion";
 
-const categories = [
-  {
-    title: "Cables",
-    image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80",
-    href: "#",
+const translations = {
+  en: {
+    nav: ["Home", "Shop", "Collections", "Blog"],
+    login: "Log In",
+    search: "Search",
+    cart: "Cart",
+    heroTitle1: "Power your world with",
+    heroTitle2: "premium electrical tools.",
+    heroSubtitle: "From cables to circuit breakers — everything a professional electrician needs, delivered fast.",
+    categories: [
+      { title: "Cables", key: "cables" },
+      { title: "Lamps", key: "lamps" },
+      { title: "Breakers", key: "breakers" },
+      { title: "Accessories", key: "accessories" },
+    ],
   },
-  {
-    title: "Lamps",
-    image: "https://images.unsplash.com/photo-1565814329452-e1efa11c5b89?w=400&q=80",
-    href: "#",
+  id: {
+    nav: ["Beranda", "Toko", "Koleksi", "Blog"],
+    login: "Masuk",
+    search: "Cari",
+    cart: "Keranjang",
+    heroTitle1: "Tenagai duniamu dengan",
+    heroTitle2: "peralatan listrik premium.",
+    heroSubtitle: "Dari kabel hingga pemutus arus — semua yang dibutuhkan teknisi listrik profesional, dikirim cepat.",
+    categories: [
+      { title: "Kabel", key: "cables" },
+      { title: "Lampu", key: "lamps" },
+      { title: "Pemutus Arus", key: "breakers" },
+      { title: "Aksesori", key: "accessories" },
+    ],
   },
-  {
-    title: "Breakers",
-    image: "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=400&q=80",
-    href: "#",
-  },
-  {
-    title: "Accessories",
-    image: "https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=400&q=80",
-    href: "#",
-  },
-];
+};
 
-const navigation = [
-  { name: "Home", href: "#" },
-  { name: "Shop", href: "#" },
-  { name: "Collections", href: "#" },
-  { name: "Blog", href: "#" },
-];
+const categoryImages: Record<string, string> = {
+  cables: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80",
+  lamps: "https://images.unsplash.com/photo-1565814329452-e1efa11c5b89?w=400&q=80",
+  breakers: "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=400&q=80",
+  accessories: "https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=400&q=80",
+};
 
 export function CommerceHero() {
+  const [lang, setLang] = useState<"en" | "id">("en");
+  const t = translations[lang];
+
   return (
     <div className="w-full relative container px-2 mx-auto max-w-7xl min-h-screen">
       <div className="mt-6 bg-accent/50 rounded-2xl relative">
@@ -56,9 +70,9 @@ export function CommerceHero() {
             </a>
 
             <nav className="hidden lg:flex items-center justify-between w-full">
-              {navigation.map((item) => (
-                <Button key={item.name} variant="link" className="cursor-pointer hover:text-primary transition-colors">
-                  {item.name}
+              {t.nav.map((item) => (
+                <Button key={item} variant="link" className="cursor-pointer hover:text-primary transition-colors">
+                  {item}
                 </Button>
               ))}
               <Button variant="ghost" size="icon" className="hover:text-primary transition-colors">
@@ -85,35 +99,51 @@ export function CommerceHero() {
                   </SheetTitle>
                 </SheetHeader>
                 <nav className="flex flex-col p-6 space-y-1">
-                  {navigation.map((item) => (
-                    <Button key={item.name} variant="ghost" className="justify-start px-2 h-12 text-base font-medium hover:bg-accent/50 hover:text-primary transition-colors">
-                      {item.name}
+                  {t.nav.map((item) => (
+                    <Button key={item} variant="ghost" className="justify-start px-2 h-12 text-base font-medium hover:bg-accent/50 hover:text-primary transition-colors">
+                      {item}
                     </Button>
                   ))}
                 </nav>
                 <Separator className="mx-6" />
                 <div className="p-6 flex flex-col gap-4">
                   <Button variant="outline" className="justify-start gap-2 h-12 hover:bg-accent/50 transition-colors">
-                    <Search className="w-4 h-4" /> Search
+                    <Search className="w-4 h-4" /> {t.search}
                   </Button>
                   <Button variant="outline" className="justify-start gap-2 h-12 hover:bg-accent/50 transition-colors relative">
-                    <ShoppingBasket className="w-4 h-4" /> Cart
+                    <ShoppingBasket className="w-4 h-4" /> {t.cart}
                     <span className="absolute right-3 w-5 h-5 bg-primary text-primary-foreground text-xs rounded-full flex items-center justify-center">3</span>
                   </Button>
                 </div>
                 <Separator className="mx-6" />
-                <div className="p-6">
+                <div className="px-6 pb-2 flex gap-2">
+                  <button onClick={() => setLang("en")} className={`flex-1 py-2 rounded-lg text-sm font-semibold transition-all duration-200 border ${lang === "en" ? "bg-yellow-500 text-white border-yellow-500" : "border-border text-muted-foreground hover:text-foreground"}`}>
+                    🇬🇧 English
+                  </button>
+                  <button onClick={() => setLang("id")} className={`flex-1 py-2 rounded-lg text-sm font-semibold transition-all duration-200 border ${lang === "id" ? "bg-yellow-500 text-white border-yellow-500" : "border-border text-muted-foreground hover:text-foreground"}`}>
+                    🇮🇩 Indonesia
+                  </button>
+                </div>
+                <div className="p-6 pt-3">
                   <Button className="w-full h-12 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-400 hover:to-orange-400 text-white transition-all duration-300 shadow-lg hover:shadow-xl">
-                    Log In <ArrowUpRight className="w-4 h-4 ml-2" />
+                    {t.login} <ArrowUpRight className="w-4 h-4 ml-2" />
                   </Button>
                 </div>
               </SheetContent>
             </Sheet>
           </div>
 
-          <div className="hidden md:flex w-1/2 justify-end items-center pr-4 gap-4 ml-auto">
+          <div className="hidden md:flex w-1/2 justify-end items-center pr-4 gap-3 ml-auto">
+            <div className="flex items-center bg-background/80 border border-border rounded-full p-1 gap-1">
+              <button onClick={() => setLang("en")} className={`px-3 py-1 rounded-full text-xs font-semibold transition-all duration-200 ${lang === "en" ? "bg-yellow-500 text-white shadow" : "text-muted-foreground hover:text-foreground"}`}>
+                EN
+              </button>
+              <button onClick={() => setLang("id")} className={`px-3 py-1 rounded-full text-xs font-semibold transition-all duration-200 ${lang === "id" ? "bg-yellow-500 text-white shadow" : "text-muted-foreground hover:text-foreground"}`}>
+                ID
+              </button>
+            </div>
             <Button variant="secondary" className="cursor-pointer bg-primary-foreground p-0 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 group">
-              <span className="pl-4 py-2 text-sm font-medium">Log In</span>
+              <span className="pl-4 py-2 text-sm font-medium">{t.login}</span>
               <div className="rounded-full flex items-center justify-center m-auto bg-background w-10 h-10 ml-2 group-hover:scale-110 transition-transform duration-300">
                 <ArrowUpRight className="w-5 h-5" />
               </div>
@@ -129,45 +159,47 @@ export function CommerceHero() {
         >
           <div className="mx-auto text-center">
             <motion.h1
+              key={lang + "h1"}
               className="text-4xl md:text-5xl lg:text-7xl font-bold tracking-tight mb-6 leading-tight"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
+              transition={{ duration: 0.4, ease: "easeOut" }}
             >
               <span className="bg-gradient-to-r from-yellow-500 via-orange-500 to-yellow-400 bg-clip-text text-transparent">
-                Power your world with
+                {t.heroTitle1}
               </span>
               <br />
-              <span className="text-foreground">premium electrical tools.</span>
+              <span className="text-foreground">{t.heroTitle2}</span>
             </motion.h1>
             <motion.p
+              key={lang + "p"}
               className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
+              transition={{ duration: 0.4, delay: 0.1, ease: "easeOut" }}
             >
-              From cables to circuit breakers — everything a professional electrician needs, delivered fast.
+              {t.heroSubtitle}
             </motion.p>
           </div>
         </motion.section>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 max-w-7xl mx-auto mt-12">
-        {categories.map((category, index) => (
+        {t.categories.map((category, index) => (
           <motion.div
-            key={category.title}
+            key={category.key}
             className="group relative bg-muted/50 backdrop-blur-sm rounded-3xl p-4 sm:p-6 min-h-[250px] sm:min-h-[300px] w-full overflow-hidden transition-all duration-500"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: index * 0.1, ease: "easeOut" }}
           >
-            <a href={category.href} className="absolute inset-0 z-20">
+            <a href="#" className="absolute inset-0 z-20">
               <h2 className="text-center text-2xl sm:text-3xl font-bold relative z-10 text-yellow-500 my-2 sm:my-4 group-hover:text-orange-500 transition-colors duration-300">
                 {category.title}
               </h2>
               <div className="absolute inset-0 flex items-center justify-center p-4">
                 <img
-                  src={category.image}
+                  src={categoryImages[category.key]}
                   alt={category.title}
                   className="w-full max-w-[180px] h-[160px] object-cover rounded-2xl opacity-80 group-hover:scale-110 group-hover:opacity-100 transition-all duration-500"
                 />
